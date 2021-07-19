@@ -9,9 +9,15 @@ boolean drawGrid = true;
 
 void setup() {
   size(800, 800);
+  int borde = 1000;
   shapes = new Shape[7];
-  for (int i=0; i<shapes.length; i++)
-    shapes[i] = i < 4 ? new  Rect() : new Term();
+  shapes[0] = new Rect(borde/2);
+  shapes[1] = new Triangulo(borde);
+  shapes[2] = new Triangulo(borde);
+  shapes[3] = new Triangulo(borde/2);
+  shapes[4] = new Triangulo(borde/2);
+  shapes[5] = new Triangulo(calcular_lado(borde));
+  shapes[6] = new Paralelogramo(borde/2);
 }
 
 void drawGrid(float scale) {
@@ -40,4 +46,7 @@ void draw() {
 void keyPressed() {
   if (key == 'g' || key == 'G')
     drawGrid = !drawGrid;
+}
+int calcular_lado(int borde){
+  return round(pow(2*pow(borde,2),0.5));
 }

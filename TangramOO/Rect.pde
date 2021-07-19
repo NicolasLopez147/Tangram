@@ -1,9 +1,7 @@
 class Rect extends Shape {
   float _edge;
 
-  Rect() {
-    this(100);
-  }
+  
 
   Rect(float edge) {
     setEdge(edge);

@@ -13,9 +13,9 @@ abstract class Shape {
   color _hue;
 
   Shape() {
-    this(new PVector(random(0, width), random(0, height)),
-         random(0, TWO_PI),
-         random(0.5, 1.5),
+    this(new PVector(random(width/4, 3*width/4), random(height/4, 3*height/4)),
+         0,
+         0.1,
          color(random(0, 255), random(0, 255), random(0, 255)));
   }
 
