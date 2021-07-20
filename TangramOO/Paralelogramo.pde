@@ -7,7 +7,6 @@ class Paralelogramo extends Shape {
 
   @Override
     void aspect() {
-
     quad(0, 0, edge(), 0, 2*edge(), edge(), edge(), edge());
   }
 

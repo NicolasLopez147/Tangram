@@ -14,16 +14,16 @@ abstract class Shape {
   boolean _seleccionado;
 
   Shape() {
-    this(new PVector(random(width/4, 3*width/4), random(height/4, 3*height/4)),
-      0,
-      0.1,
-      color(random(0, 255), random(0, 255), random(0, 255)), false);
+    this(new PVector(random(width/4, 3*width/4), random(height/4, 3*height/5)),
+      0, 0.1, color(random(0, 255), random(0, 255), random(0, 255)), false);
   }
 
   Shape(PVector position, float rotation, float scaling, color hue, boolean seleccionado) {
     setPosition(position);
     setRotation(rotation);
     setScaling(scaling);
+    while (hue == #FFFFFF || hue == #000000)
+      hue = color(random(0, 255), random(0, 255), random(0, 255));
     setHue(hue);
     setSeleccion(seleccionado);
   }
@@ -43,17 +43,8 @@ abstract class Shape {
 
   abstract void aspect();
 
-  /*
-  // Escoja uno solo de los siguientes dos prototipos para la funcion contains:
-   boolean contains(int x, int y) {
-   return true;
-   }
-   
-   abstract boolean contains(int x, int y);
-   // */
-
   void seleccionar(int x, int y) {
-    if (get(x, y)==hue()) {
+    if (get(x, y)==hue() && get(x, y)!=#314EFF) {
       setSeleccion(!getSeleccionar());
     } else {
       setSeleccion(false);
@@ -81,7 +72,13 @@ abstract class Shape {
   }
 
   void setRotation(float rotation) {
-    _rotation = rotation*PI/180;
+    if (rotation <= 2*PI){
+      _rotation = _rotation+(rotation*(PI/180));
+    }else{
+      _rotation = rotation-(2*PI);
+      println("Hola");
+    }
+      
   }
 
   PVector position() {

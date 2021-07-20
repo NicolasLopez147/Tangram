@@ -10,7 +10,7 @@ boolean drawGrid = true;
 void setup() {
   size(800, 800);
   int borde = 1000;
-  shapes = new Shape[7];
+  shapes = new Shape[10];
   shapes[0] = new Rect(borde/2);
   shapes[1] = new Triangulo(borde);
   shapes[2] = new Triangulo(borde);
@@ -18,6 +18,9 @@ void setup() {
   shapes[4] = new Triangulo(borde/2);
   shapes[5] = new Triangulo(calcular_lado(borde));
   shapes[6] = new Paralelogramo(borde/2);
+  shapes[7] = new Term("Guardar diseño", 600, 40);
+  shapes[8] = new Term("Cargar diseño", 600, 80);
+  shapes[9] = new Term("Modo Libre", 600, 120);
 }
 
 void drawGrid(float scale) {
@@ -50,11 +53,11 @@ void mousePressed() {
 }
 
 void mouseWheel(MouseEvent event) {
-  float signo = event.getCount();
+  float sentido = event.getCount();
   for (Shape shape : shapes) {
     if (shape.getSeleccionar()) {
-      println(shape.rotation()+1);
-      shape.setRotation(shape.rotation()+1);
+      shape.setRotation(sentido*(shape.rotation()+1));
+      println(shape.rotation());
     }
   }
 }

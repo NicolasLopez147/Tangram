@@ -1,7 +1,6 @@
 class Triangulo extends Shape {
   float _edge;
 
-
   Triangulo(float edge) {
     setEdge(edge);
   }

@@ -1,13 +1,9 @@
 class Term extends Shape {
   String _elements;
 
-  Term() {
-    this(3, 8);
-  }
-
-  Term(String elements, float scaling) {
+  Term(String elements, int x, int y) {
+    super(new PVector(x, y), 0, 2, color(#314EFF), false);
     setElements(elements);
-    setScaling(scaling);
   }
 
   Term(int elements, float scaling) {
