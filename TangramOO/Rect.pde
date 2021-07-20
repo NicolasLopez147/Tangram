@@ -1,14 +1,12 @@
 class Rect extends Shape {
   float _edge;
 
-  
-
   Rect(float edge) {
     setEdge(edge);
   }
 
   @Override
-  void aspect() {
+    void aspect() {
     rectMode(CENTER);
     rect(0, 0, edge(), edge());
   }

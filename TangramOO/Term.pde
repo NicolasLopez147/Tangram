@@ -16,7 +16,7 @@ class Term extends Shape {
   }
 
   @Override
-  void aspect() {
+    void aspect() {
     noStroke();
     text(_elements, 0, 0);
   }

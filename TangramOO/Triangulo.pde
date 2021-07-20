@@ -7,9 +7,9 @@ class Triangulo extends Shape {
   }
 
   @Override
-  void aspect() {
+    void aspect() {
     //rectMode(CENTER);
-    triangle(0, 0, 0, edge(),edge(),0);
+    triangle(0, 0, 0, edge(), edge(), 0);
   }
 
   public float edge() {

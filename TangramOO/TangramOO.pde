@@ -1,5 +1,5 @@
 // Implementar:
-// 1. La creación de las siete distintas piezas (por ahora son todas Rect) 
+// 1. La creación de las siete distintas piezas (por ahora son todas Rect)
 // 2. La interacción: selección y manipulación de las piezas (ratón, teclas, touch...)
 // 3. La evaluacion de la solucion
 // 4. El modo de creacion de nuevos problemas
@@ -43,10 +43,26 @@ void draw() {
     shape.draw();
 }
 
+void mousePressed() {
+  for (Shape shape : shapes) {
+    shape.seleccionar(mouseX, mouseY);
+  }
+}
+
+void mouseWheel(MouseEvent event) {
+  float signo = event.getCount();
+  for (Shape shape : shapes) {
+    if (shape.getSeleccionar()) {
+      println(shape.rotation()+1);
+      shape.setRotation(shape.rotation()+1);
+    }
+  }
+}
+
 void keyPressed() {
   if (key == 'g' || key == 'G')
     drawGrid = !drawGrid;
 }
-int calcular_lado(int borde){
-  return round(pow(2*pow(borde,2),0.5));
+int calcular_lado(int borde) {
+  return round(pow(2*pow(borde, 2), 0.5)/2);
 }
