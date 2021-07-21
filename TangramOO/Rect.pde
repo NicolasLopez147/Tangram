@@ -10,6 +10,12 @@ class Rect extends Shape {
     rectMode(CENTER);
     rect(0, 0, edge(), edge());
   }
+  @Override
+    void cambiarCoordenadas() {
+    if (getSeleccionar()) {
+      setPosition(new PVector(mouseX, mouseY));
+    }
+  }
 
   public float edge() {
     return _edge;

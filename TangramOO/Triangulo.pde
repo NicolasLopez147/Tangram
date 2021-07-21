@@ -10,6 +10,12 @@ class Triangulo extends Shape {
     //rectMode(CENTER);
     triangle(0, 0, 0, edge(), edge(), 0);
   }
+  @Override
+    void cambiarCoordenadas() {
+    if (getSeleccionar()) {
+      setPosition(new PVector(mouseX, mouseY));
+    }
+  }
 
   public float edge() {
     return _edge;

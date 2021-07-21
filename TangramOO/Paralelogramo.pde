@@ -4,6 +4,15 @@ class Paralelogramo extends Shape {
   Paralelogramo(float edge) {
     setEdge(edge);
   }
+  
+  @Override
+    void cambiarCoordenadas() {
+    if (getSeleccionar()) {
+      setPosition(new PVector(mouseX, mouseY));
+    }
+  }
+
+
 
   @Override
     void aspect() {

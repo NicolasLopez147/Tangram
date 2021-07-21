@@ -10,6 +10,17 @@ class Term extends Shape {
     setElements(elements);
     setScaling(scaling);
   }
+  @Override
+    void cambiarCoordenadas() {
+  }
+
+  void seleccionar(int x, int y) {
+    if ( x>=position().x && x<= position().x+180 && y<=position().y && y>=position().y-18*scaling()) {
+      setSeleccion(!getSeleccionar());
+    } else {
+      setSeleccion(false);
+    }
+  }
 
   @Override
     void aspect() {

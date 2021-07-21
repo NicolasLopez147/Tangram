@@ -31,9 +31,7 @@ abstract class Shape {
   void draw() {
     push();
     fill(hue());
-    if (getSeleccionar()) {
-      setPosition(new PVector(mouseX, mouseY));
-    }
+    cambiarCoordenadas();
     translate(position().x, position().y);
     rotate(rotation());
     scale(scaling(), scaling());
@@ -42,14 +40,16 @@ abstract class Shape {
   }
 
   abstract void aspect();
+  abstract void cambiarCoordenadas();
 
   void seleccionar(int x, int y) {
-    if (get(x, y)==hue() && get(x, y)!=#314EFF) {
+    if (get(x, y)==hue()&& hue()!= #314EFF) {
       setSeleccion(!getSeleccionar());
     } else {
       setSeleccion(false);
     }
   }
+
 
   boolean getSeleccionar() {
     return _seleccionado;
@@ -72,13 +72,12 @@ abstract class Shape {
   }
 
   void setRotation(float rotation) {
-    if (rotation <= 2*PI){
+    if (rotation <= 2*PI) {
       _rotation = _rotation+(rotation*(PI/180));
-    }else{
+    } else {
       _rotation = rotation-(2*PI);
       println("Hola");
     }
-      
   }
 
   PVector position() {
