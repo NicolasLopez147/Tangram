@@ -6,14 +6,12 @@ class Paralelogramo extends Shape {
   }
   
   @Override
-    void cambiarCoordenadas() {
+    void cambiarCoordenadas(int x, int y) {
     if (getSeleccionar()) {
-      setPosition(new PVector(mouseX, mouseY));
+      setPosition(new PVector(x, y));
     }
   }
-
-
-
+  
   @Override
     void aspect() {
     quad(0, 0, edge(), 0, 2*edge(), edge(), edge(), edge());

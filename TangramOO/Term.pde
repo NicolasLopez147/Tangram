@@ -11,7 +11,7 @@ class Term extends Shape {
     setScaling(scaling);
   }
   @Override
-    void cambiarCoordenadas() {
+    void cambiarCoordenadas(int x, int y) {
   }
 
   void seleccionar(int x, int y) {

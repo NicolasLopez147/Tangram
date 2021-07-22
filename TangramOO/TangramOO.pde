@@ -10,8 +10,9 @@ Term ganar;
 PImage img;
 boolean drawGrid = true;
 boolean imagen;
-int numDiseno = 1;
-color [] colores;
+int numDiseno;
+JSONArray disenosData;
+JSONObject json;
 
 void setup() {
   size(800, 600);
@@ -31,9 +32,14 @@ void setup() {
   botones[2] = new Term("Modo Libre", 600, 120);
 
   ganar = new Term("Felicitaciones, ha resuelto el problema", 100, 40);
+
+  json = loadJSONObject("data/data.json");
+  disenosData = json.getJSONArray("disenos");
+  numDiseno = disenosData.size();
 }
 
 void drawGrid(float scale) {
+  println(numDiseno);
   push();
   strokeWeight(1);
   int i;
@@ -50,17 +56,17 @@ void drawGrid(float scale) {
 
 void draw() {
   background(255, 255, 255);
-  if (drawGrid)
-    drawGrid(10);
   if (imagen)
     image(img, 0, 0, width, height);
+  if (drawGrid)
+    drawGrid(10);
   for (Shape shape : shapes)
     shape.draw();
   for (Term bot : botones)
     bot.draw();
-  //detectarDiseno();
   if (imagen)
     validarGanar();
+  //detectarDiseno();
 }
 
 void mouseClicked() {
@@ -89,8 +95,7 @@ void mouseWheel(MouseEvent event) {
   float sentido = event.getCount();
   for (Shape shape : shapes) {
     if (shape.getSeleccionar()) {
-      shape.setRotation(sentido*(shape.rotation()+1));
-      println(shape.rotation());
+      shape.setRotation(shape.rotation()+(sentido*(PI/12)));
     }
   }
 }
@@ -103,31 +108,35 @@ int calcular_lado(int borde) {
   return round(pow(2*pow(borde, 2), 0.5)/2);
 }
 void guardarDiseno() {
-  colores = new color[7];
-
+  color [] colores = new color[7];
   for (int i = 0; i < 7; i ++) {
     colores[i] = shapes[i].hue();
-  }
-  for (int i = 0; i < 7; i ++) {
-    println(colores[i]);
   }
   for (Shape shape : shapes) {
     shape.setHue(#000000);
   }
+  drawGrid = false;
   draw();
-
-
   guardarImagen();
   for (int i = 0; i < 7; i ++) {
     shapes[i].setHue(colores[i]);
   }
+  drawGrid = true;
 }
 void guardarImagen() {
   numDiseno++;
-  save("data/diseno-"+numDiseno+".jpg");
+  String url = "data/diseno-"+numDiseno+".jpg";
+  JSONObject diseno = new JSONObject();
+  diseno.setString("url", url);
+  disenosData.setJSONObject(numDiseno, diseno);
+  json.setJSONArray("disenos", disenosData);
+  saveJSONObject(json, "data/data.json");
+  save(url);
+
+  // saveJSONArray(disenosData, "data/data.json");
 }
 void cargarDiseno() {
-  img = loadImage("diseno-2.jpg");
+  img = loadImage("diseno-"+"1"+".jpg");
   imagen = true;
 }
 void modoLibre() {
@@ -139,10 +148,9 @@ void detectarDiseno() {
     try {
       img = loadImage("diseno-"+numDiseno+".jpg");
       numDiseno++;
+      println(numDiseno);
     }
-    catch(Error  e ) {
-      noLoop();
-      print("Hola");
+    catch(NullPointerException e) {
       bandera = false;
     }
   }
@@ -150,6 +158,7 @@ void detectarDiseno() {
 void validarGanar() {
   loadPixels();
   int count = 0;
+
   for (int i = 0; i < pixels.length; i ++) {
     if (pixels[i] == color(#000000))
       count++;

@@ -11,9 +11,9 @@ class Rect extends Shape {
     rect(0, 0, edge(), edge());
   }
   @Override
-    void cambiarCoordenadas() {
+    void cambiarCoordenadas(int x, int y) {
     if (getSeleccionar()) {
-      setPosition(new PVector(mouseX, mouseY));
+      setPosition(new PVector(x, y));
     }
   }
 

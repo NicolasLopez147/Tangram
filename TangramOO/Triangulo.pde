@@ -11,9 +11,9 @@ class Triangulo extends Shape {
     triangle(0, 0, 0, edge(), edge(), 0);
   }
   @Override
-    void cambiarCoordenadas() {
+    void cambiarCoordenadas(int x, int y) {
     if (getSeleccionar()) {
-      setPosition(new PVector(mouseX, mouseY));
+      setPosition(new PVector(x, y));
     }
   }
 
