@@ -7,12 +7,16 @@
 Shape[] shapes;
 Term[] botones;
 Term ganar;
+Rect [] botonesDiseno;
 PImage img;
 boolean drawGrid = true;
-boolean imagen;
+boolean dibujarImagen;
+boolean dibujarMenu = false;
+boolean dibujarBotones = true;
 int numDiseno;
 JSONArray disenosData;
 JSONObject json;
+
 
 void setup() {
   size(800, 600);
@@ -55,46 +59,64 @@ void drawGrid(float scale) {
 }
 
 void draw() {
-  background(255, 255, 255);
-  if (imagen)
-    image(img, 0, 0, width, height);
-  if (drawGrid)
-    drawGrid(10);
-  for (Shape shape : shapes)
-    shape.draw();
-  for (Term bot : botones)
-    bot.draw();
-  if (imagen)
-    validarGanar();
-  //detectarDiseno();
+
+  if (!dibujarMenu) {
+    background(255, 255, 255);
+    if (dibujarImagen)
+      image(img, 0, 0, width, height);
+    if (drawGrid)
+      drawGrid(10);
+    for (Shape shape : shapes) {
+      shape.draw();
+      if (shape.seleccion())
+        shape.setPosition(new PVector(mouseX, mouseY));
+    }
+    if (dibujarBotones) {
+      for (Term bot : botones)
+        bot.draw();
+    }
+    if (dibujarImagen)
+      validarGanar();
+    //detectarDiseno();
+  } else {
+    background(#D2BFFF);
+    mostarDiseno();
+  }
 }
 
 void mouseClicked() {
-  for (Shape shape : shapes) {
-    shape.seleccionar(mouseX, mouseY);
-  }
-  for (Term bot : botones) {
-    bot.seleccionar(mouseX, mouseY);
-  }
-  for (Term bot : botones) {
-    if (bot.getSeleccionar()) {
-      if (bot.elements() == "Guardar diseño") {
-        guardarDiseno();
-      }
-      if (bot.elements() == "Cargar diseño") {
-        cargarDiseno();
-      }
-      if (bot.elements() == "Modo Libre") {
-        modoLibre();
+  if (!dibujarMenu) {
+    for (Shape shape : shapes) {
+      shape.seleccionar(mouseX, mouseY);
+    }
+    for (Term bot : botones) {
+      bot.seleccionar(mouseX, mouseY);
+    }
+    for (Term bot : botones) {
+      if (bot.seleccion()) {
+        if (bot.elements() == "Guardar diseño") {
+          guardarDiseno();
+        }
+        if (bot.elements() == "Cargar diseño") {
+          dibujarMenu = true;
+        }
+        if (bot.elements() == "Modo Libre") {
+          modoLibre();
+        }
       }
     }
+  } else {
+    for (Rect botDis : botonesDiseno) {
+      botDis.seleccionar(new PVector (mouseX, mouseY));
+    }
+    cargarDiseno();
   }
 }
 
 void mouseWheel(MouseEvent event) {
   float sentido = event.getCount();
   for (Shape shape : shapes) {
-    if (shape.getSeleccionar()) {
+    if (shape.seleccion()) {
       shape.setRotation(shape.rotation()+(sentido*(PI/12)));
     }
   }
@@ -103,7 +125,15 @@ void mouseWheel(MouseEvent event) {
 void keyPressed() {
   if (key == 'g' || key == 'G')
     drawGrid = !drawGrid;
+  if (key == ' ') {
+    for (Shape shape : shapes) {
+      if (shape.seleccion()) {
+        shape.setScaling(shape.scaling()*-1);
+      }
+    }
+  }
 }
+
 int calcular_lado(int borde) {
   return round(pow(2*pow(borde, 2), 0.5)/2);
 }
@@ -116,31 +146,62 @@ void guardarDiseno() {
     shape.setHue(#000000);
   }
   drawGrid = false;
+  dibujarBotones = false;
   draw();
   guardarImagen();
   for (int i = 0; i < 7; i ++) {
     shapes[i].setHue(colores[i]);
   }
   drawGrid = true;
+  dibujarBotones = true;
 }
 void guardarImagen() {
-  numDiseno++;
-  String url = "data/diseno-"+numDiseno+".jpg";
+  String url = "diseno-"+numDiseno+".jpg";
   JSONObject diseno = new JSONObject();
   diseno.setString("url", url);
   disenosData.setJSONObject(numDiseno, diseno);
   json.setJSONArray("disenos", disenosData);
   saveJSONObject(json, "data/data.json");
-  save(url);
+  save("data/"+url);
+  numDiseno++;
+}
+void mostarDiseno() {
+  int margen = 10;
+  int ancho = width-(2*margen);
+  int espacio = 5;
+  int lado = 150;
+  int x = margen;
+  int y = margen;
+  botonesDiseno = new Rect[disenosData.size()];
+  for (int i = 0; i < disenosData.size(); i++) {
+    JSONObject diseno = disenosData.getJSONObject(i);
+    img = loadImage(diseno.getString("url"));
+    if (x+lado > ancho) {
+      x = margen;
+      y = y+lado+espacio;
+    }
+    botonesDiseno[i] = new Rect(x+round(lado/2), y+round(lado/2), lado, #E82121);
+    botonesDiseno[i].draw();
+    image(img, x, y, lado, lado);
+    x = x + espacio+lado;
+    //width, height
 
-  // saveJSONArray(disenosData, "data/data.json");
+    //largo = largo + 30+lado;
+  }
 }
 void cargarDiseno() {
-  img = loadImage("diseno-"+"1"+".jpg");
-  imagen = true;
+  for (int i = 0; i < disenosData.size(); i++) {
+    println(botonesDiseno[i].seleccion());
+    if (botonesDiseno[i].seleccion()) {
+      JSONObject diseno = disenosData.getJSONObject(i);
+      img = loadImage(diseno.getString("url"));
+      dibujarMenu = false;
+      dibujarImagen = true;
+    }
+  }
 }
 void modoLibre() {
-  imagen = false;
+  dibujarImagen = false;
 }
 void detectarDiseno() {
   boolean bandera= true;
@@ -163,7 +224,7 @@ void validarGanar() {
     if (pixels[i] == color(#000000))
       count++;
   }
-  if (count <= 30) {
+  if (count <= 100) {
     ganar.draw();
   }
   println(count);

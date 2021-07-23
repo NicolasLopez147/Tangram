@@ -10,13 +10,16 @@ class Term extends Shape {
     setElements(elements);
     setScaling(scaling);
   }
+  /*
   @Override
-    void cambiarCoordenadas(int x, int y) {
-  }
+   void cambiarCoordenadas(int x, int y) {
+   }
+   */
 
-  void seleccionar(int x, int y) {
+  @Override
+    void seleccionar(int x, int y) {
     if ( x>=position().x && x<= position().x+180 && y<=position().y && y>=position().y-18*scaling()) {
-      setSeleccion(!getSeleccionar());
+      setSeleccion(!seleccion());
     } else {
       setSeleccion(false);
     }

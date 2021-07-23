@@ -31,7 +31,7 @@ abstract class Shape {
   void draw() {
     push();
     fill(hue());
-    cambiarCoordenadas(mouseX, mouseY);
+    //cambiarCoordenadas(mouseX,mouseY);
     translate(position().x, position().y);
     rotate(rotation());
     scale(scaling(), scaling());
@@ -40,18 +40,13 @@ abstract class Shape {
   }
 
   abstract void aspect();
-  abstract void cambiarCoordenadas(int x, int y);
-
-  void seleccionar(int x, int y) {
-    if (get(x, y)==hue()) {
-      setSeleccion(!getSeleccionar());
-    } else {
-      setSeleccion(false);
-    }
-  }
+  //abstract void cambiarCoordenadas(int x, int y);
+  abstract void seleccionar(int x, int y);
 
 
-  boolean getSeleccionar() {
+
+
+  boolean seleccion() {
     return _seleccionado;
   }
 
