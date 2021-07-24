@@ -1,23 +1,17 @@
 class Paralelogramo extends Shape {
+  //-----------------------------Atributos---------------------------------
   float _edge;
-
+  //Constructor
   Paralelogramo(float edge) {
     setEdge(edge);
   }
-  /*
-  @Override
-   void cambiarCoordenadas(int x, int y) {
-   if (seleccion()) {
-   setPosition(new PVector(x, y));
-   }
-   }
-   */
-
+  //-----------------------------Metodos-----------------------------------
+  //Dibuja la figura segun su tipo
   @Override
     void aspect() {
-    quad(0, 0, edge(), 0, 2*edge(), edge(), edge(), edge());
+    quad(0, 0, edge(), 0, edge()*(1+scaling()), edge(), scaling()*edge(), edge());
   }
-
+  //Selecciona la figura
   @Override
     void seleccionar(int x, int y) {
     if (get(x, y)==hue()) {
@@ -26,7 +20,15 @@ class Paralelogramo extends Shape {
       setSeleccion(false);
     }
   }
-
+  //Calcula el centro de la figura
+  /*
+  @Override
+   PVector centrar() {
+   PVector posicionCentro = new PVector(edge()*scaling(),edge()*scaling()/2);
+   return posicionCentro;
+   }
+   */
+  //--------------------------------Getters y setters-------------------
   public float edge() {
     return _edge;
   }

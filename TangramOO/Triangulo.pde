@@ -1,16 +1,19 @@
 class Triangulo extends Shape {
+  //---------------------------Atributos-------------------------------------
   float _edge;
 
+  //Constructor principal
   Triangulo(float edge) {
     setEdge(edge);
   }
 
+  //--------------------------Metodos-----------------------------------------
+  //Dibuja la figura segun su tipo
   @Override
     void aspect() {
-    //rectMode(CENTER);
-    triangle(0, 0, 0, edge(), edge(), 0);
+    triangle(0, 0, 0, scaling()*edge(), edge(), 0);
   }
-
+  //Selecciona la figura
   @Override
     void seleccionar(int x, int y) {
     if (get(x, y)==hue()) {
@@ -19,15 +22,20 @@ class Triangulo extends Shape {
       setSeleccion(false);
     }
   }
+
+  //Calcula el centro de la figura
   /*
   @Override
-   void cambiarCoordenadas(int x, int y) {
-   if (seleccion()) {
-   setPosition(new PVector(x, y));
-   }
+   PVector centrar() {
+   PVector posicionCentro = new PVector(edge()/2,edge()/2);
+   return posicionCentro;
    }
    */
+  /*
 
+
+   */
+  //-------------------------------Getters y setters-----------------------------
   public float edge() {
     return _edge;
   }

@@ -1,21 +1,22 @@
 class Rect extends Shape {
+  //--------------------------Atributos----------------------------
   float _edge;
-
+  //Constructor auxiliar
   Rect(float edge) {
     setEdge(edge);
   }
-
+  //Constructor heredado
   Rect(int x, int y, float edge, color col) {
     super(new PVector(x, y), 0, 1, color(col), false);
     setEdge(edge);
   }
-
+  //--------------------------Metodos-------------------------------
+  //Dibuja la figura segun su tipo
   @Override
     void aspect() {
-    rectMode(CENTER);
-    rect(0, 0, edge(), edge());
+    rect(0, 0, scaling()*edge(), scaling()*edge());
   }
-
+  //Selecciona la figura
   @Override
     void seleccionar(int x, int y) {
     if (get(x, y)==hue()) {
@@ -24,23 +25,25 @@ class Rect extends Shape {
       setSeleccion(false);
     }
   }
+
+  //Calcula el centro de la figura
+  /*
+  @Override
+   PVector centrar() {
+   PVector posicionCentro = new PVector((edge()*scaling())/2, (edge()*scaling())/2);
+   return posicionCentro;
+   }
+   */
+  //Metodo sobrecargado, selecciona por posicion y no por color
   void seleccionar(PVector posicion) {
-    if (posicion.x >= position().x-(edge()/2) && posicion.x <= position().x+(edge()/2)&& posicion.y >= position().y-(edge()/2)&& posicion.y <= position().y+(edge()/2) ) {
+    if (posicion.x >= position().x && posicion.x <= position().x+edge()&& posicion.y >= position().y && posicion.y <= position().y+edge()) {
       setSeleccion(!seleccion());
     } else {
       setSeleccion(false);
     }
   }
 
-  /*
-  @Override
-   void cambiarCoordenadas(int x, int y) {
-   if (seleccion()) {
-   setPosition(new PVector(x, y));
-   }
-   }
-   */
-
+  //------------------------------Getters y setters------------------------------
   public float edge() {
     return _edge;
   }
